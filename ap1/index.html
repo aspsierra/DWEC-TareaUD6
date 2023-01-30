@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Temporizador</title>
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <h2>Temporizador</h2>
+    <form id="formTemporizador">
+        Min: <input type="number" name="min" id="formMin" value="0">
+        Seg: <input type="number" name="seg" id="formSeg" value="5"> <br /> <br />
+        <input type="submit" value="Empezar">
+    </form>
+    <br />
+
+    <div id="temporizador">
+        Tiempo restante <span id="min">00</span>:<span id="seg">00</span>
+    </div>
+</body>
+<footer>
+    <script>
+
+        var form = document.getElementById("formTemporizador");
+        var interv = null;
+        var time = null;
+
+        var inputMins = form.formMin;
+        var inputSegs = form.formSeg;
+
+        var campoMin = document.getElementById("min");
+        var campoSeg = document.getElementById("seg");
+
+        /**
+         * Evento de submit del formulario
+         */
+        form.addEventListener("submit", evt => {
+            evt.preventDefault();
+
+            var mins = parseInt(inputMins.value);
+            var segs = parseInt(inputSegs.value);
+
+            switch (compruebaInputs(mins, segs)) {
+                case -1:
+                    alert("Error, parámetros no válidos\n" +
+                        "Tienes que introducir números positivos y mayores o iguales a 0\n" +
+                        "Acuérdate que si pones minutos y segundos, los segundos tienen que ser menores de 60");
+                    break;
+                case 1:
+                    temporizador(mins, segs);
+                    break;
+                case 2:
+                    temporizador(mins, segs);
+                    break;
+            }
+        })
+
+        /**
+        * Comprobación de que los datosintroducidos son válidos
+        * @param {number} inMins
+        * @param {number} inSegs
+        */
+        function compruebaInputs(inMins, inSegs) {
+            var comprueba = 0;
+            if (inMins < 0 || inSegs < 0 || isNaN(inMins) == true || isNaN(inSegs) == true) {
+                //alguno de los valores introducidos no es válido
+                comprueba = -1;
+            } else if (inMins == 0 && inSegs > 0) {
+                //solo se pusieron segundos
+                comprueba = 1;
+            } else if (inMins > 0 && inSegs < 60) {
+                //se puso un tiempo en minutos y segundos
+                comprueba = 2;
+            } else {
+                comprueba = -1;
+            }
+            return comprueba;
+        }
+
+        /**
+         * Gestión de temporizador
+         * @param {number} minutos
+         * @param {number} segundos
+         */
+        function temporizador(minutos, segundos) {
+
+            formato(minutos, segundos);
+
+            var miliSec = (minutos * 60 + segundos) * 1000;
+
+            //Cuenta atrás
+            interv = setInterval(() => {
+                if (segundos != 0) {
+                    segundos--;
+                } else {
+                    minutos--;
+                    segundos = 59;
+                }
+
+                formato(minutos, segundos);
+
+            }, 1000);
+
+            //Temporizador con el tiempo establecido
+            time = setTimeout(() => {
+                interv = clearInterval(interv);
+                time = clearTimeout(time);
+                campoMin.innerText = '00';
+                campoSeg.innerText = '00';
+                alert("Terminó el temporizador");
+            }, miliSec);
+
+        }
+
+        /**
+         * Formato 00:00
+         * @param {number} mins
+         * @param {number} seg
+         */
+        function formato(mins, seg) {
+            mins < 10 ? campoMin.innerText = "0" + mins : campoMin.innerText = mins;
+            seg < 10 ? campoSeg.innerText = "0" + seg : campoSeg.innerText = seg;
+        }
+
+    </script>
+</footer>
+
+</html>

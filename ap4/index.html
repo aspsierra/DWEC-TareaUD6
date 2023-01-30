@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 4. Carrusel de imágenes</title>
+    <style type="text/css" media="screen">
+        .carousel {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        #imagen {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+        }
+
+        /* ESTILOS AÑADIDOS */
+        .carousel {
+            gap: 2em;
+            align-items: center;
+        }
+
+        .carousel button {
+            height: 10em;
+            width: 10em;
+            border-radius: 1em;
+
+        }
+
+        button {
+            border: 1px solid gray;
+            cursor: pointer;
+            font-size: larger;
+        }
+
+        .controles {
+            display: flex;
+            margin-top: 3em;
+            justify-content: center;
+            align-items: center;
+            gap: 2em;
+        }
+
+        .controles button {
+            height: 3em;
+            width: 10em;
+            border-radius: 3em;
+            text-transform: uppercase;
+        }
+
+        #play {
+            background-color: lightgreen;
+        }
+
+        #stop {
+            background-color: indianred;
+        }
+
+        #imagen:hover {
+            filter: brightness(0.7);
+            cursor: pointer;
+            transition: filter 0.5s ease;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            // Variables
+            const IMAGENES = [
+                'https://cdn.pixabay.com/photo/2020/12/15/13/44/children-5833685__340.jpg',
+                'https://cdn.pixabay.com/photo/2021/02/09/18/45/grass-5999566__340.jpg',
+                'https://cdn.pixabay.com/photo/2021/02/03/17/36/river-5978743__340.jpg'
+            ];
+            const TIEMPO_INTERVALO_MILESIMAS_SEG = 1000;
+            let posicionActual = 0;
+
+            let $botonRetroceder = document.querySelector('#retroceder');
+            let $botonAvanzar = document.querySelector('#avanzar');
+            let $botonPlay = document.querySelector('#play');
+            let $botonStop = document.querySelector('#stop');
+
+
+            let intervalo;
+            let $imagen = document.querySelector('#imagen');
+
+            //Evento Click
+
+            /**
+             * Genero un únco evento y para gestionar los clicks sobre el documento
+             */
+            document.addEventListener("click", evt => {
+                switch (evt.target.id) {
+                    case "avanzar":
+                        pasarFoto();
+                        break;
+                    case "retroceder":
+                        retrocederFoto();
+                        break;
+                    case "play":
+                        playIntervalo();
+                        break;
+                    case "stop":
+                        stopIntervalo();
+                        break;
+                    case "imagen":
+                    case "imgActual":
+                        console.log(IMAGENES[posicionActual])
+                        descargar(IMAGENES[posicionActual])
+                        break;
+                }
+            })
+
+            /**
+             * avanzar a la siguiente foto
+             */
+            function pasarFoto() {
+                if (posicionActual >= IMAGENES.length - 1) {
+                    posicionActual = 0;
+                } else {
+                    posicionActual++;
+                }
+                renderizarImagen();
+            }
+            /**
+             * Retrocedera la anterior foto
+             */
+            function retrocederFoto() {
+                if (posicionActual <= 0) {
+                    posicionActual = IMAGENES.length - 1;
+                } else {
+                    posicionActual--;
+                }
+                renderizarImagen();
+            }
+
+            /**
+             * Mostrar una imagen
+             */
+            function renderizarImagen() {
+                var imagen = document.createElement("img");
+                imagen.src = IMAGENES[posicionActual]
+                $imagen.innerHTML = `<img id = 'imgActual' src='${IMAGENES[posicionActual]}'>`
+            }
+
+            /**
+             * Inicio del intervalo
+             */
+            function playIntervalo() {
+                intervalo = setInterval(pasarFoto, TIEMPO_INTERVALO_MILESIMAS_SEG);
+                // Desactivamos los botones de control
+                $botonAvanzar.setAttribute('disabled', true);
+                $botonRetroceder.setAttribute('disabled', true);
+                $botonPlay.setAttribute('disabled', true);
+                $botonStop.removeAttribute('disabled');
+            }
+
+            /**
+             * Parar el intervalo de pasar imágenes
+             */
+            function stopIntervalo() {
+                clearInterval(intervalo);
+                // Activamos los botones de control
+                $botonAvanzar.removeAttribute('disabled');
+                $botonRetroceder.removeAttribute('disabled');
+                $botonPlay.removeAttribute('disabled');
+                $botonStop.setAttribute('disabled', true);
+            }
+            /**
+             * Función de descarga de imágenes
+             * @param {String} imageUrl
+             */
+            function descargar(imageUrl) {
+                //creo y confuguro un 'a' que para descargar la imagen
+                var link = document.createElement("a");
+                link.href = imageUrl;
+                link.download = "image.jpg";
+                link.style.display = "none";
+                //Lo añado al body y en cuanto se descargue se borra el a
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            // Iniciar
+            renderizarImagen();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="carousel">
+        <button id="retroceder">Retroceder</button>
+        <div id="imagen"></div>
+        <button id="avanzar">Avanzar</button>
+    </div>
+    <div class="controles">
+        <button id="play">Play</button>
+        <button id="stop" disabled>Stop</button>
+    </div>
+</body>
+
+</html>

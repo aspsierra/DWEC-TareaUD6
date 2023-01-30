@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Arrastrar y soltar archivos</title>
+    <style>
+        .example {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        #drop_zone {
+            border: 2px dashed #bbb;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            padding: 25px;
+            text-align: center;
+            font: 20pt bold 'Vollkorn';
+            color: #bbb;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Uso de la acción de arrastrar y soltar para seleccionar archivos. ¡Haz una prueba!</p>
+    <div class="example">
+        <div id="drop_zone">Suelta los archivos aquí.</div>
+        <output id="file_list2"></output>
+    </div>
+    <p>Nota: algunos navegadores tratan los elementos <code>&lt;input type="file"&gt;</code> como destinos donde soltar
+        archivos nativos. Intenta arrastrar los archivos al campo de introducción de contenido del ejemplo anterior.</p>
+</body>
+
+<footer>
+    <script>
+
+        var dropZone = document.getElementById("drop_zone");
+        var fileList = document.getElementById("file_list2");
+
+        //Evento de soltar archivo
+        dropZone.addEventListener("drop", evt => {
+            evt.preventDefault();
+            var archivos = evt.dataTransfer.files;
+            console.log(archivos);
+            fileList.innerHTML = "";
+            for (let i = 0; i < archivos.length; i++) {
+                fileList.innerHTML += "Nombre: " + archivos[i].name + "<br>";
+                fileList.innerHTML += "Tipo: " + archivos[i].type + "<br>";
+                fileList.innerHTML += "Tamaño: " + archivos[i].size + " bytes<br>";
+                fileList.innerHTML += "<br>";
+
+            }
+        });
+
+        //Evento de arrastrar archivo, evito que haga la acción por defecto 
+        dropZone.addEventListener("dragover", evt => {
+            evt.preventDefault();
+        })
+
+
+    </script>
+</footer>
+
+</html>

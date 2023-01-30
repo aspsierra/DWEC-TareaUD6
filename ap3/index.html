@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Ejercicio 3. Creacion Tabla DOM</title>
+
+    <style>
+        .miClase {
+            border: red 5px solid;
+        }
+    </style>
+
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <div id="div1"></div>
+    <button type="button" id="creartabla">Crear tabla</button>
+</body>
+
+<footer>
+    <script>
+
+        var div = document.getElementById("div1");
+
+        /*
+        Genero un evento click para todo el documento y 
+        *gestionarlo en función de donde hagas clic
+        */
+        document.addEventListener("click", evt => {
+            // Creación de la tabla
+            if (evt.target.id == "creartabla") {
+                var filas = prompt("Escribe un número de filas", 5);
+                var columnas = prompt("Escribe un número de columnas", 5);
+
+                evt.target.disabled = true;
+
+                var tabla = "<table>"
+                for (let i = 0; i < filas; i++) {
+                    tabla += "<tr>"
+                    for (let j = 0; j < columnas; j++) {
+                        tabla += "<td> Fila " + (i + 1) + ", Columa " + (j + 1) + "</td>";
+                    }
+                    tabla += "</tr>";
+                }
+                div.innerHTML = tabla + "</table>";
+
+                //Generar los inputs individuales
+            } else if (evt.target.tagName == "TD") {
+                var casilla = evt.target;
+                casilla.className = "miClase";
+                casilla.innerHTML = ""
+                var input = document.createElement("input", "text");
+                casilla.appendChild(input);
+
+                casilla.addEventListener("keypress", evtKey => {
+                    console.log(casilla)
+
+                    if (evtKey.key == "Enter") {
+                        casilla.className = "";
+                        casilla.innerHTML = "<p>" + input.value + "</p>"
+                    }
+
+                    casilla.removeEventListener("keypress", evtKey => { });
+                    console.log(casilla)
+                })
+
+            }
+
+
+        })
+    </script>
+</footer>
+
+</html>

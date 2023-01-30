@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartado 2</title>
+</head>
+
+<body>
+    <div>sexo
+        <span>Lorem ipsum asexoria sit amet.</span>
+        <div>
+            <p>
+                Lorem ipsum dolor sit, amet sexo adipisicing sexo. Asperiores facilis iusto debitis officiis
+                sexo animi fuga iste quis voluptate ducimus!
+            </p>
+            <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. sEXo, atque alias. Ex veniam rem labore omnis
+                impedit sexo eaque adipisci?
+            </p>
+            <div> SEXO
+                <span> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eum rerum aliquam porro facilis dolorum
+                    sapiente.</span>
+                <div>
+                    <span><i>Lorem ipsum dolor sit amet, consectetur elit. Fuga, SEXO.</i></span>
+                    <p>Lorem, ipsum sexo sit amet consectetur adipisicing sexo. Voluptates accusantium alias vel sexo
+                        sexo facere atque sit asperiores, doloribus error!</p>
+                    <ul> SEXO
+                        <li>sexo</li>
+                        <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aperiam cumque, voluptate
+                            architecto nobis magnam consequatur.</li>
+                        <li>
+                            <p>Lorem ipsum ipsum sit amet.</p>
+                        </li>
+                        sexo
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <span>Lorem sexo dolor sit amet.</span>
+    </div>
+
+    <button id="bloqueo">Bloquear contenido</button>
+</body>
+
+<footer>
+    <script>
+
+
+        /**
+         * Función recursiva para recorrer el document
+         * @param {HTMLElement} contenido
+         */
+        function bloqueo(contenido) {
+            //Si el elemento a examinar tiene algun hijo, los recorro
+            if (contenido.children.length > 0) {
+
+                for (let i = 0; i < contenido.children.length; i++) {
+                    /*
+                    Si alguno de los elementos hijo tiene a su vez algún hijo, llamo
+                    de nuevo a la función para recorrerlo de nuevo
+                    */
+                    bloqueo(contenido.children[i]);
+                }
+                // No quiero cambiar el interior de las etiquetas de tipo Script o button
+            } else if (contenido.tagName != "SCRIPT" || contenido.tagName != "BUTTON") {
+
+                var texto = contenido.innerHTML.toLocaleLowerCase();
+                if (texto.includes('sexo')) {
+                    //contenido.innerHTML = contenido.innerHTML.replace(/[sS][eE][xX][oO]/, '<b>Contenido bloqueado</b>');
+                    texto = '<b>Contenido bloqueado</b>'
+                    contenido.innerHTML = '<b>Contenido bloqueado</b>'
+                }
+                return;
+            }
+            //en caso de que quede alguna palabra 'sexo' fuera de la etiqueta, la cambio 
+            contenido.innerHTML = contenido.innerHTML.replace(/[sS][eE][xX][oO]/, '<b>Contenido bloqueado</b>');
+        }
+
+        document.getElementById("bloqueo").addEventListener("click", () => { bloqueo(document.body) });
+
+
+    </script>
+
+</footer>
+
+</html>
