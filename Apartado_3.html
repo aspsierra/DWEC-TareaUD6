@@ -9,6 +9,9 @@
         .miClase {
             border: red 5px solid;
         }
+        td {
+            border: 1px solid black;
+        }
     </style>
 
     <script>
@@ -28,7 +31,7 @@
 
         /*
         Genero un evento click para todo el documento y 
-        *gestionarlo en función de donde hagas clic
+        gestionarlo en función de donde hagas clic
         */
         document.addEventListener("click", evt => {
             // Creación de la tabla
@@ -51,21 +54,19 @@
                 //Generar los inputs individuales
             } else if (evt.target.tagName == "TD") {
                 var casilla = evt.target;
+                var textoPrevio = casilla.innerHTML;
                 casilla.className = "miClase";
                 casilla.innerHTML = ""
                 var input = document.createElement("input", "text");
                 casilla.appendChild(input);
 
                 casilla.addEventListener("keypress", evtKey => {
-                    console.log(casilla)
-
                     if (evtKey.key == "Enter") {
                         casilla.className = "";
-                        casilla.innerHTML = "<p>" + input.value + "</p>"
+                        casilla.innerHTML = textoPrevio + "<p>" + input.value + "</p>";
                     }
 
                     casilla.removeEventListener("keypress", evtKey => { });
-                    console.log(casilla)
                 })
 
             }

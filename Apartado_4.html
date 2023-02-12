@@ -106,7 +106,6 @@
                         break;
                     case "imagen":
                     case "imgActual":
-                        console.log(IMAGENES[posicionActual])
                         descargar(IMAGENES[posicionActual])
                         break;
                 }
@@ -124,7 +123,7 @@
                 renderizarImagen();
             }
             /**
-             * Retrocedera la anterior foto
+             * Retroceder a la anterior foto
              */
             function retrocederFoto() {
                 if (posicionActual <= 0) {

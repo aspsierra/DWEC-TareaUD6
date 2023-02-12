@@ -43,7 +43,6 @@
         dropZone.addEventListener("drop", evt => {
             evt.preventDefault();
             var archivos = evt.dataTransfer.files;
-            console.log(archivos);
             fileList.innerHTML = "";
             for (let i = 0; i < archivos.length; i++) {
                 fileList.innerHTML += "Nombre: " + archivos[i].name + "<br>";

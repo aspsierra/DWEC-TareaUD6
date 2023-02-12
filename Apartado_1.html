@@ -25,12 +25,12 @@
 <footer>
     <script>
 
-        var form = document.getElementById("formTemporizador");
+        var form = document.forms['formTemporizador']
         var interv = null;
         var time = null;
 
-        var inputMins = form.formMin;
-        var inputSegs = form.formSeg;
+        var inputMins = form.elements['formMin'];
+        var inputSegs = form.elements['formSeg'];
 
         var campoMin = document.getElementById("min");
         var campoSeg = document.getElementById("seg");
@@ -90,8 +90,6 @@
 
             formato(minutos, segundos);
 
-            var miliSec = (minutos * 60 + segundos) * 1000;
-
             //Cuenta atrás
             interv = setInterval(() => {
                 if (segundos != 0) {
@@ -111,8 +109,7 @@
                 time = clearTimeout(time);
                 campoMin.innerText = '00';
                 campoSeg.innerText = '00';
-                alert("Terminó el temporizador");
-            }, miliSec);
+            }, (minutos * 60 + segundos) * 1000);
 
         }
 
